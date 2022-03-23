@@ -7,12 +7,15 @@ import {lightMode, darkMode} from '../Actions/modeSlice';
 import { useState } from 'react';
 
 const Light = styled.div`
- display: flex;
+background-color:white;
+    #header{
+        display: flex;
     justify-content: space-between;
     align-items: center;
     align-content: center;
     background-color: #4E5D89;
     color: white;
+    }
     h2{
         padding-left:10px;
     }
@@ -31,20 +34,22 @@ const Light = styled.div`
     }
     Button:hover{
         color:black;
-    }
     }
 `;
 
 const Dark = styled.div`
- display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    background-color: black;
-    color: white;
-    h2{
+     background-color:gray;
+     #header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+        background-color: black;
+        color: white;
+       }
+     h2{
         padding-left:10px;
-    }
+      }
     .IconName{
         display: flex;
         flex-direction: column;
@@ -56,11 +61,10 @@ const Dark = styled.div`
         display: flex;
     }
     Button{
-        color: white;
+        color: gray;
     }
     Button:hover{
-        color:black;
-    }
+        color:white;
     }
 `;
 
@@ -82,19 +86,20 @@ const Header = () =>{
     }
 
     return(
-        <div>
         <Choosendiv>
-          <h2>What's My Weather</h2>
-          <div className='IconsDiv'>
-
-            <div className='IconName'><Button onClick={changeMode}><Brightness4/></Button>Mode</div> 
-            <div className='IconName'><Link to='/home'><Button><Home/></Button></Link>Home</div> 
-            <div className='IconName'><Link to='/favorites'><Button><Favorite/></Button></ Link>Favorites</div> 
-          </div>
-            </Choosendiv>
-
-        <Outlet/>
+        <div id='header'>
+           <h2>What's My Weather</h2>
+           <div className='IconsDiv'>
+              <div className='IconName'><Button onClick={changeMode}><Brightness4/></Button>Mode</div> 
+              <div className='IconName'><Link to='/home'><Button><Home/></Button></Link>Home</div> 
+              <div className='IconName'><Link to='/favorites'><Button><Favorite/></Button></ Link>Favorites</div> 
+            </div>
         </div>
+          
+        <div className='outlet'>
+          <Outlet/>
+        </div>
+        </Choosendiv>
 
     )
 }

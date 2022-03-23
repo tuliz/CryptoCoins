@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import {Autocomplete, TextField, Button} from "@mui/material";
-import {Favorite, FavoriteBorder} from '@mui/icons-material';
-import Item from './Item';
+import {Autocomplete, TextField} from "@mui/material";
+import CityWeather from './Cityweather';
 
 const Div = styled.div`
   margin-top:10px;
@@ -19,10 +18,7 @@ const Div = styled.div`
 `;
 
 const Home = ()=>{
-    let degrees = 'Fahrenheit';
-    const changeDegrees = () =>{
-        degrees = degrees === 'Celsius' ? 'Fahrenheit' : 'Celsius'; 
-    }
+    
     return(
         <Div>
             <Autocomplete 
@@ -31,66 +27,15 @@ const Home = ()=>{
                   options = {top100Films}
                   sx={{width:'50%', margin:'auto'}}
            />
-           <div className='upperHome'>
-             <div className='city'>
-               <p>Tel-Aviv</p>
-               <p>39° {degrees === 'Celsius' ? 'C' : 'F'}</p>
-             </div>
-             <Button className='favorite'><FavoriteBorder/>Add To Favorites</Button>
-           </div>
-           {weatherArr.map(item=>{
-               return <Item key={item.id} day={item.day} date={item.date} img={item.img} degrees={item.degrees} weather={item.weather}/>
-           })}
-          
+
+           <CityWeather/>
+           
 
         </Div>
     )
 }
 
 
-const weatherArr = [
-    {
-        id: 1,
-        day: 'sunday',
-        date: '23/03/2022',
-        img: '../images/rain.png',
-        degrees: '10C',
-        weather: 'rain'
-    },
-    {
-        id: 2,
-        day: 'sunday',
-        date: '23/03/2022',
-        img: '../images/rain.png',
-        degrees: '10C',
-        weather: 'rain'
-    },
-    {
-        id: 3,
-        day: 'sunday',
-        date: '23/03/2022',
-        img: '../images/rain.png',
-        degrees: '10C',
-        weather: 'rain'
-    },
-    {
-        id: 4,
-        day: 'sunday',
-        date: '23/03/2022',
-        img: '../images/rain.png',
-        degrees: '10C',
-        weather: 'rain'
-    },
-    {
-        id: 5,
-        day: 'sunday',
-        date: '23/03/2022',
-        img: '../images/rain.png',
-        degrees: '10C',
-        weather: 'rain'
-    }
-
-]
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const top100Films = [
