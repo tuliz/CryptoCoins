@@ -1,9 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import modeReducer from '../Actions/modeSlice';
-
+import homeReducer from '../Actions/homeSlice';
 
 export default configureStore({
     reducer: {
-        mode: modeReducer,
+       home: homeReducer,
     },
 });

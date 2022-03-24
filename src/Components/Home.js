@@ -1,6 +1,11 @@
 import styled from '@emotion/styled';
-import {Autocomplete, TextField} from "@mui/material";
-import CityWeather from './Cityweather';
+import {Autocomplete, TextField, Button} from "@mui/material";
+import {Favorite, FavoriteBorder} from '@mui/icons-material';
+import Item from './Item';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { setCityKey, setGeo, setFiveDaysWeather } from '../Actions/homeSlice';
+import { fiveDaysRequest } from '../Api';
 
 const Div = styled.div`
   margin-top:10px;
@@ -17,18 +22,52 @@ const Div = styled.div`
   }
 `;
 
-const Home = ()=>{
-    
+
+
+ const Home = ()=>{
+
+  const dispatch = useDispatch();
+
+  const fiveDays = useSelector(state=>state.home.fiveDaysWeather);
+  let city =  useSelector(state=>state.home.citykey);
+
+  useEffect(()=>{
+    fiveDaysRequest(city, true).then(res=>dispatch(setFiveDaysWeather(res.data.DailyForecasts)));
+  }, []);
+  console.log(fiveDays);
+  
+
+  const getCurrentGeoLocation = () =>{
+    const geo = navigator.geolocation;  
+    geo.getCurrentPosition(position=>{
+            const lat = position.coords.latitude;
+           const lon = position.coords.longitude;
+           dispatch(setGeo({lat, lon}));
+     });
+  }
+  getCurrentGeoLocation();
+  console.log(useSelector(state=>state.home.lon));
+ 
+
     return(
         <Div>
             <Autocomplete 
                   disablePortal
-                  renderInput={(params) => <TextField {...params} label="City" />}
+                  renderInput={(params) => <TextField  {...params} label="City" />}
                   options = {top100Films}
                   sx={{width:'50%', margin:'auto'}}
            />
 
-           <CityWeather/>
+<div className='upperHome'>
+             <div className='city'>
+               <p>Tel-Aviv</p>
+               <p>39°</p>
+             </div>
+             <Button className='favorite'><FavoriteBorder/>Add To Favorites</Button>
+           </div>
+           {fiveDays.map(item=>{
+               return <Item key={Math.random()} day={item.Date} date={item.Date} img={item.img} degrees={item.Temperature.Maximum.Value} weather={item.Day.IconPhrase}/>
+           })}
            
 
         </Div>
@@ -36,6 +75,52 @@ const Home = ()=>{
 }
 
 
+
+
+
+const weatherArr = [
+    {
+        id: 1,
+        day: 'sunday',
+        date: '23/03/2022',
+        img: '../images/rain.png',
+        degrees: '10C',
+        weather: 'rain'
+    },
+    {
+        id: 2,
+        day: 'sunday',
+        date: '23/03/2022',
+        img: '../images/rain.png',
+        degrees: '10C',
+        weather: 'rain'
+    },
+    {
+        id: 3,
+        day: 'sunday',
+        date: '23/03/2022',
+        img: '../images/rain.png',
+        degrees: '10C',
+        weather: 'rain'
+    },
+    {
+        id: 4,
+        day: 'sunday',
+        date: '23/03/2022',
+        img: '../images/rain.png',
+        degrees: '10C',
+        weather: 'rain'
+    },
+    {
+        id: 5,
+        day: 'sunday',
+        date: '23/03/2022',
+        img: '../images/rain.png',
+        degrees: '10C',
+        weather: 'rain'
+    }
+
+]
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const top100Films = [

@@ -3,7 +3,7 @@ import {Home, Favorite, Brightness4} from '@mui/icons-material';
 import { Button } from '@mui/material';
 import {Link, Outlet} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {lightMode, darkMode} from '../Actions/modeSlice';
+import {lightMode, darkMode} from '../Actions/homeSlice';
 import { useState } from 'react';
 
 const Light = styled.div`
@@ -71,7 +71,7 @@ const Dark = styled.div`
 
 const Header = () =>{
     const dispatch = useDispatch();
-    const mode = useSelector(state => state.mode.value);
+    const mode = useSelector(state => state.home.mode);
     const[Choosendiv, setChoosendiv]= useState(Light);
 
     const changeMode = ()=>{

@@ -1,31 +1,35 @@
-import axios from "axios";
+import axios from 'axios';
 
 const Axios = axios.create({
-    baseUrl : 'https://dataservice.accuweather.com'
-})
+    baseURL : 'https://dataservice.accuweather.com' 
+});
 
-const API_KEY = 'jm313LouDB5DR79LXIddBgu67ZcwCVPN';
+const API_KEY = 'rEpvmjnVca3zACnERWGMKDG2AA9gcRux';
 const AUTOCOMPLETE_URL = '/locations/v1/cities/autocomplete';
-const CURRENT_WEATHER_URL = 'currentconditions/v1/';
+const CURRENT_WEATHER_URL = '/currentconditions/v1/';
 const FIVE_DAYS_URL = '/forecasts/v1/daily/5day/';
-const GEOPOSITION_URL = '/locations/v1/cities/geoposition/search';
+const GEOLOCATION_URL = 'locations/v1/cities/geoposition/search';
 
-export const autocompleteRequest = (searchby) =>{
-    const url = `${AUTOCOMPLETE_URL}?apikey=${API_KEY}&q=${searchby}`;
+export const autocompleteRequest = (searchingBy) => {
+    const url = `${AUTOCOMPLETE_URL}?apikey=${API_KEY}&q=${searchingBy}`;
     return Axios.get(url);
 }
 
-export const currentWeatherRequest = (searchWord) =>{
-    const url = `${CURRENT_WEATHER_URL}?apikey=${API_KEY}&q=${searchWord}`;
+export const currentWeatherRequest = (searchWord) => {
+    const url = `${CURRENT_WEATHER_URL}${searchWord}?apikey=${API_KEY}`;
     return Axios.get(url);
 }
 
-export const fiveDaysRequest = (city, metric) =>{
-    const url = `${FIVE_DAYS_URL}${city}?apikey=${API_KEY}&metric=${metric}`;
-    return Axios.get(url);
+export const fiveDaysRequest = (city, fCMode) =>{
+    let metric = '';
+    if (fCMode === true) {
+        metric = "&metric=true"
+    }
+    const url = `${FIVE_DAYS_URL}${city}?apikey=${API_KEY}${metric}`;
+    return Axios.get(url)
 }
 
-export const geopositionRequest = (lat, lon) =>{
-    const url = `${GEOPOSITION_URL}?apikey=${API_KEY}&q=${lat}%2C${lon}`;
+export const geolocationRequest = (lat, lon) => {
+    const url = `${GEOLOCATION_URL}?apikey=${API_KEY}&q=${lat}%2C${lon}`;
     return Axios.get(url);
 }
