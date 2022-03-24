@@ -47,5 +47,5 @@ export const homeSlice = createSlice({
         
     }
 })
-export const {setFiveDaysWeather, setAutosearchList, celsius, fahrenheit, lightMode, darkMode, setCityKey, setGeo} = homeSlice.actions;
+export const {setFiveDaysWeather, setAutosearchList, celsius, fahrenheit, lightMode, darkMode, setCityKey, setCurrentCity, setGeo} = homeSlice.actions;
 export default homeSlice.reducer;

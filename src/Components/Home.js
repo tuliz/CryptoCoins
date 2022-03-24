@@ -4,7 +4,7 @@ import {Favorite, FavoriteBorder} from '@mui/icons-material';
 import Item from './Item';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { setCityKey, setGeo, setFiveDaysWeather, setAutosearchList } from '../Actions/homeSlice';
+import { setCityKey, setGeo, setFiveDaysWeather, setAutosearchList, setCurrentCity } from '../Actions/homeSlice';
 import { fiveDaysRequest, autocompleteRequest } from '../Api';
 
 const Div = styled.div`
@@ -53,23 +53,26 @@ const Div = styled.div`
   }
 
   const getCitiesList = (e) =>{
-    console.log(e.target.value);
+    if(e.target.value != ''){ 
     autocompleteRequest(e.target.value).then(result=>dispatch(setAutosearchList(result.data)));
     setSearchby(e.target.value);
+    }
   }
 
-  const returnCitiesNames = () =>{
-    return autosearchList.map(item=>{
-      return item.LocalizedName
-    })
+  const getSearchedCity = (e, value) =>{
+    fiveDaysRequest(value.Key, true).then(result=>dispatch((setFiveDaysWeather(result.data.DailyForecasts))));
+    dispatch(setCurrentCity(value.LocalizedName));
   }
+
   
     return(
         <Div>
             <Autocomplete 
                   disablePortal
                   renderInput={(params) => <TextField onChange={getCitiesList} {...params} label="City" />}
-                  options = {returnCitiesNames(autosearchList)}
+                  options = {autosearchList}
+                  onChange = {getSearchedCity}
+                  getOptionLabel= {option=>option.LocalizedName}
                   sx={{width:'50%', margin:'auto'}}
            />
 
