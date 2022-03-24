@@ -35,7 +35,7 @@ const Item = (props)=>{
             <p className='cardDay'>{props.day}</p>
             <p className='cardDate'>{props.date}</p>
             <CardMedia className='Image'
-            image = {require('../images/rain.png')} alt='rain'
+            image = {require(`../images/${props.img}.png`)} alt='rain'
             title = 'img'
             style={{ paddingTop: '56%' }}
 
