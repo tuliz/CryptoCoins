@@ -7,8 +7,7 @@ export const homeSlice = createSlice({
         mode: 'light',
         fiveDaysWeather: [],
         autosearchList: [],
-        citykey: 215854,
-        currentCity: 'Tel Aviv',
+        city: {key: 215854, name: 'Tel Aviv'},
         lat : '0',
         lon: '0',
 
@@ -34,11 +33,9 @@ export const homeSlice = createSlice({
             state.value = 'dark';
         },
        
-        setCityKey: (state, action)=>{
-            state.citykey = action.payload.citykey;
-        },
-        setCurrentCity: (state, action)=>{
-            state.currentCity = action.payload
+        setCity: (state, action)=>{
+            state.city.key = action.payload.key;
+            state.city.name = action.payload.name;
         },
         setGeo: (state, action)=>{
             state.lat = action.payload.lat;
@@ -47,5 +44,5 @@ export const homeSlice = createSlice({
         
     }
 })
-export const {setFiveDaysWeather, setAutosearchList, celsius, fahrenheit, lightMode, darkMode, setCityKey, setCurrentCity, setGeo} = homeSlice.actions;
+export const {setFiveDaysWeather, setAutosearchList, celsius, fahrenheit, lightMode, darkMode, setCity, setGeo} = homeSlice.actions;
 export default homeSlice.reducer;
