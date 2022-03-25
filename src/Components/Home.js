@@ -34,7 +34,7 @@ const Div = styled.div`
   const city =  useSelector(state=>state.home.city);
   const autosearchList = useSelector(state=>state.home.autosearchList);
   const favoritesList = useSelector(state=>state.favorites.favoritesList);
-  const isFavorite = useSelector(state=>state.favorite.isFavorite);
+  const isFavorite = useSelector(state=>state.favorites.isFavorite);
 
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -76,9 +76,9 @@ const Div = styled.div`
     })
   }*/
 
-  const handleTempChange = ()=>{
+  //const handleTempChange = ()=>{
 
-  }
+  //}
 
   const handleAddFavoriteClicked = ()=>{
     dispatch(setIsFavorite(true));
@@ -90,8 +90,8 @@ const Div = styled.div`
     dispatch(removeFavorite(city.key));
   }
 
-  const favoriteButton = !isFavorite ? <Button className='favorite' onClick={handleAddFavoriteClicked()}><FavoriteBorder/>Add To Favorites</Button>:
-  <Button onClick={handleRemoveFavoriteClicked()}><Favorite/>Remove From Favorites</Button>;
+  //const favoriteButton = !isFavorite ? <Button className='favorite' onClick={handleAddFavoriteClicked()}><FavoriteBorder/>Add To Favorites</Button>:
+  //<Button onClick={handleRemoveFavoriteClicked()}><Favorite/>Remove From Favorites</Button>;
   
     return(
      <Div>
@@ -107,9 +107,9 @@ const Div = styled.div`
       <div className='upperHome'>
        <div className='city'>
         <p>{city.name}</p>
-        <Button onClick={handleTempChange}>F/C</Button>
+        <Button>F/C</Button>
        </div>
-       {favoriteButton}
+       
        </div>
            {fiveDays.map(item=>{
                return <Item 

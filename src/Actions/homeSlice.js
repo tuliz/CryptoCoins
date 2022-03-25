@@ -22,7 +22,7 @@ export const homeSlice = createSlice({
             state.metric = action.payload;
         },
         changeMode: (state, action)=>{
-            state.mode = action.payload;
+            state.mode = action.payload.value;
         },
         setCity: (state, action)=>{
             state.city.key = action.payload.key;
