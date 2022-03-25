@@ -54,11 +54,6 @@ const Div = styled.div`
   }
 */
 
-  /*const getDay = (date) =>{
-    let b = date.split(/\D/);
-    return new Date(Date.UTC(b[0], --b[1], b[2], b[3]||0, b[4]||0, b[5]||0, b[6]||0));
-  }
-*/
 
   const getCitiesList = (e) =>{
     if(e.target.value !== ''){ 
@@ -115,6 +110,7 @@ const Div = styled.div`
         <p>{city.name}</p>
         <Button className='fcBtn' onClick={() => handleFCMode()}>F/C</Button>
        </div>
+       {favoriteButton}
        
        </div>
            {fiveDays.map(item=>{

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import Item from './Item';
 import { currentWeatherRequest } from '../Api'; 
+import { useEffect, useState } from 'react';
 
 const Div = styled.div`
 padding: 1rem;
@@ -13,19 +14,42 @@ padding: 1rem;
 `;
 
 const Favorites = ()=>{
+    const[localCurrentWeatherList, setLocalCurrentWeatherList] = useState([]);
     const favoritesList = useSelector(state=>state.favorites.favoritesList);
+
+
+    console.log(favoritesList);
+    console.log(localCurrentWeatherList);
+    useEffect(()=>{
+         favoritesList.map((item, index)=>{
+           
+                currentWeatherRequest(item.key).then(result=>{
+                setLocalCurrentWeatherList(lastFavorites=> [...lastFavorites, result.data]);
+             })
+        })
+    }, [favoritesList]);
+      
+
+    const mapFavoritesToCard = ()=>{
+        if (favoritesList.length === 0) return <div style={{ fontSize: '2vw' }}>No Favorites</div>;
+        return localCurrentWeatherList.map((item, index)=>{
+            return <Item
+            key={Math.random()}
+            cityname={favoritesList[index].name}
+            img={item[0].WeatherIcon}
+            degrees={item[0].Temperature.Metric.Value}
+            weather={item[0].WeatherText}
+            />
+        })
+       
+    }
+        
+       
     return(
         <Div>
             <h2>My Favorites:</h2>
             <div className='ItemsDiv'>
-            {favoritesList.map(item=>{
-                const data = currentWeatherRequest(item.key).then(result=>{
-                    console.log(result.data);
-                    return result.data;
-                })
-                console.log(data);
-            })
-            }
+            {mapFavoritesToCard()}
             </div>
         </Div>
     );
