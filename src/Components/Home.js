@@ -4,7 +4,7 @@ import {Favorite, FavoriteBorder} from '@mui/icons-material';
 import Item from './Item';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect} from 'react';
-import { setCity, setGeo, setFiveDaysWeather, setAutosearchList} from '../Actions/homeSlice';
+import { setCity, setLocation, setFiveDaysWeather, setAutosearchList} from '../Actions/homeSlice';
 import { addFavorite, removeFavorite, setIsFavorite } from '../Actions/favoritesSlice';
 import { fiveDaysRequest, autocompleteRequest } from '../Api';
 
@@ -43,9 +43,8 @@ const Div = styled.div`
   }, []);
 
 /*  const getCurrentGeoLocation = () =>{
-    const geo = navigator.geolocation;  
-    geo.getCurrentPosition(position=>{
-           dispatch(setGeo({lat: position.coords.latitude, lon: position.coords.longitude}));
+    navigator.geolocation.getCurrentPosition(position=>{
+           dispatch(setLocation({lat: position.coords.latitude, lon: position.coords.longitude}));
      });
   }
 */
@@ -77,11 +76,17 @@ const Div = styled.div`
     })
   }*/
 
+  const handleTempChange = ()=>{
+
+  }
+
   const handleAddFavoriteClicked = ()=>{
+    dispatch(setIsFavorite(true));
     dispatch(addFavorite(city));
   }
 
   const handleRemoveFavoriteClicked = ()=>{
+    dispatch(setIsFavorite(false));
     dispatch(removeFavorite(city.key));
   }
 
@@ -102,12 +107,19 @@ const Div = styled.div`
       <div className='upperHome'>
        <div className='city'>
         <p>{city.name}</p>
-        <p>{0}</p>
+        <Button onClick={handleTempChange}>F/C</Button>
        </div>
        {favoriteButton}
        </div>
            {fiveDays.map(item=>{
-               return <Item key={Math.random()} day={weekDays[getDay(item.Date).getDay()]} date={item.Date} img={item.Day.Icon} degrees={item.Temperature.Maximum.Value} weather={item.Day.IconPhrase}/>
+               return <Item 
+               key={Math.random()} 
+               day={weekDays[getDay(item.Date).getDay()]}
+               date={item.Date} 
+               img={item.Day.Icon} 
+               degrees={item.Temperature.Maximum.Value} 
+               weather={item.Day.IconPhrase}
+               />
            })}
            
 
