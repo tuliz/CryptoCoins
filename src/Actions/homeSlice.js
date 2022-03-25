@@ -19,7 +19,7 @@ export const homeSlice = createSlice({
             state.autosearchList = action.payload;
         },
         changeTempMode: (state, action)=>{
-            state.metric = action.payload;
+            state.metric = !action.payload;
         },
         changeMode: (state, action)=>{
             state.mode = action.payload.value;

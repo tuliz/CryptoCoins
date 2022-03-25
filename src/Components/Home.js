@@ -4,14 +4,18 @@ import {Favorite, FavoriteBorder} from '@mui/icons-material';
 import Item from './Item';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect} from 'react';
-import { setCity, setLocation, setFiveDaysWeather, setAutosearchList} from '../Actions/homeSlice';
+import { setCity, setLocation, setFiveDaysWeather, setAutosearchList, changeTempMode} from '../Actions/homeSlice';
 import { addFavorite, removeFavorite, setIsFavorite } from '../Actions/favoritesSlice';
 import { fiveDaysRequest, autocompleteRequest } from '../Api';
+import moment from 'moment';
 
 const Div = styled.div`
   margin-top:10px;
 
   .favorite{color:red;}
+  .fcBtn{
+    color:black;
+  }
 
   .upperHome{
       display:flex;
@@ -35,11 +39,12 @@ const Div = styled.div`
   const autosearchList = useSelector(state=>state.home.autosearchList);
   const favoritesList = useSelector(state=>state.favorites.favoritesList);
   const isFavorite = useSelector(state=>state.favorites.isFavorite);
+  const tempMode = useSelector(state=>state.home.metric);
 
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   useEffect(()=>{
-   fiveDaysRequest(city.key, true).then(result=>dispatch(setFiveDaysWeather(result.data.DailyForecasts)));
+   fiveDaysRequest(city.key, tempMode).then(result=>dispatch(setFiveDaysWeather(result.data.DailyForecasts)));
   }, []);
 
 /*  const getCurrentGeoLocation = () =>{
@@ -49,10 +54,11 @@ const Div = styled.div`
   }
 */
 
-  const getDay = (date) =>{
+  /*const getDay = (date) =>{
     let b = date.split(/\D/);
     return new Date(Date.UTC(b[0], --b[1], b[2], b[3]||0, b[4]||0, b[5]||0, b[6]||0));
   }
+*/
 
   const getCitiesList = (e) =>{
     if(e.target.value !== ''){ 
@@ -62,7 +68,7 @@ const Div = styled.div`
   }
 
   const getSearchedCity = (e, value) =>{
-    fiveDaysRequest(value.Key, true).then(result=>dispatch((setFiveDaysWeather(result.data.DailyForecasts))));
+    fiveDaysRequest(value.Key, tempMode).then(result=>dispatch((setFiveDaysWeather(result.data.DailyForecasts))));
     dispatch(setCity({key : value.Key, name: value.LocalizedName}));
   }
 
@@ -76,22 +82,22 @@ const Div = styled.div`
     })
   }*/
 
-  //const handleTempChange = ()=>{
+  const handleFCMode = ()=>{
+    dispatch(changeTempMode());
+  }
 
-  //}
-
-  const handleAddFavoriteClicked = ()=>{
+  const handleAddFavorite = ()=>{
     dispatch(setIsFavorite(true));
     dispatch(addFavorite(city));
   }
 
-  const handleRemoveFavoriteClicked = ()=>{
+  const handleRemoveFavorite = ()=>{
     dispatch(setIsFavorite(false));
     dispatch(removeFavorite(city.key));
   }
 
-  //const favoriteButton = !isFavorite ? <Button className='favorite' onClick={handleAddFavoriteClicked()}><FavoriteBorder/>Add To Favorites</Button>:
-  //<Button onClick={handleRemoveFavoriteClicked()}><Favorite/>Remove From Favorites</Button>;
+  const favoriteButton = !isFavorite ? <Button className='favorite' onClick={handleAddFavorite}><FavoriteBorder/>Add To Favorites</Button>:
+  <Button className='favorite' onClick={handleRemoveFavorite}><Favorite/>Remove From Favorites</Button>;
   
     return(
      <Div>
@@ -107,15 +113,15 @@ const Div = styled.div`
       <div className='upperHome'>
        <div className='city'>
         <p>{city.name}</p>
-        <Button>F/C</Button>
+        <Button className='fcBtn' onClick={() => handleFCMode()}>F/C</Button>
        </div>
        
        </div>
            {fiveDays.map(item=>{
                return <Item 
                key={Math.random()} 
-               day={weekDays[getDay(item.Date).getDay()]}
-               date={item.Date} 
+               day={moment(item.Date).format('dddd')}
+               date={moment.parseZone(item.Date).format('DD/MM/YYYY')} 
                img={item.Day.Icon} 
                degrees={item.Temperature.Maximum.Value} 
                weather={item.Day.IconPhrase}

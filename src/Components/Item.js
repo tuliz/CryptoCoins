@@ -11,7 +11,7 @@ margin:10px;
         width: 15vw;
         height: 50vh;
     }
-    .cardDay{
+    .cardHeader{
         display: flex; 
         flex-direction: row;
         align-items: center;
@@ -32,7 +32,7 @@ const Item = (props)=>{
     return(
         <Div>
         <Card className='Card'>
-            <p className='cardDay'>{props.day}</p>
+            <p className='cardHeader'>{props.day || props.cityname}</p>
             <p className='cardDate'>{props.date}</p>
             <CardMedia className='Image'
             image = {require(`../images/${props.img}.png`)} alt='rain'
