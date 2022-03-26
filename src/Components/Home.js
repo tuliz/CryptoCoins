@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import {Container, Grid ,Autocomplete, TextField, Button} from "@mui/material";
+import {Autocomplete, TextField, Button} from "@mui/material";
 import {Favorite, FavoriteBorder} from '@mui/icons-material';
 import Item from './Item';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState} from 'react';
 import { setCity, setFiveDaysWeather, setAutosearchList, changeTempMode} from '../Actions/homeSlice';
@@ -33,16 +34,24 @@ const Div = styled.div`
     font-size:20px;
   }
 
+
+  .searchError{
+    font-size: 12px;
+    color: red;
+    height: 12px;
+    font-weight: bold;
+  }
+
   .upperHome{
       display:flex;
       align-items: center;
       justify-content: space-between; }
 
-  .WeatherDiv{
+      .weatherDiv{
         display: flex;
         justify-content: space-between;
         height: 55vh; 
-        padding: 0.5rem;
+        padding: 1rem;
     }
 
   .city{
@@ -56,8 +65,10 @@ const Div = styled.div`
  const Home = ()=>{
 
   const dispatch = useDispatch();
+  const {cityId} = useParams();
 
-  const [searchBy, setSearchBy] = useState('');
+  console.log(cityId);
+
   const [errorValidation, setErrorValidation] = useState('');
 
   const fiveDays = useSelector(state=>state.home.fiveDaysWeather);
@@ -74,13 +85,15 @@ const Div = styled.div`
      }, [fiveDays]);
 
      useEffect(() => 
-      favoritesList.map(favorite=>{
+      favoritesList.forEach(favorite=>{
         if(favorite.key === city.key)
           dispatch(setIsFavorite(true));
+          
         else
           dispatch(setIsFavorite(false));
-     }), []);
 
+     }), []);
+  
 
   const getCitiesList = (e) =>{
     if(e.target.value !== ''){ 
@@ -90,13 +103,14 @@ const Div = styled.div`
 
   const getSearchedCity = (e, value) =>{
     fiveDaysRequest(value.Key, tempMode).then(result=>dispatch((setFiveDaysWeather(result.data.DailyForecasts))));
-    checkIsFavorite(value)? dispatch(setIsFavorite(true)) : dispatch(setIsFavorite(false));
+    checkIsFavorite()? dispatch(setIsFavorite(true)) : dispatch(setIsFavorite(false));
     dispatch(setCity({key : value.Key, name: value.LocalizedName}));
+
+
   }
 
 
   const checkValidation = (value) =>{
-    setSearchBy(value);
     let isValide = true;
     let error = '';
 
@@ -111,12 +125,13 @@ const Div = styled.div`
 }
 
   const checkIsFavorite = () =>{
-    favoritesList.map(favorite=>{
-      if(favorite.key === city.key)
-        dispatch(setIsFavorite(true));
-
-      dispatch(setIsFavorite(false));
+    favoritesList.forEach(favorite=>{
+      if(favorite.key === city.key){
+        return true;
+      }
     })
+    return false;
+ 
   }
   
 
@@ -127,20 +142,17 @@ const Div = styled.div`
   const handleAddFavorite = ()=>{
     dispatch(setIsFavorite(true));
     dispatch(addFavorite(city));
-    console.log(favoritesList);
   }
 
   const handleRemoveFavorite = ()=>{
     dispatch(setIsFavorite(false));
     dispatch(removeFavorite(city.key));
-    console.log(favoritesList);
   }
 
   const favoriteButton = !isFavorite ? <Button className='favorite' onClick={handleAddFavorite}><FavoriteBorder/>Add To Favorites</Button>:
   <Button className='favorite' onClick={handleRemoveFavorite}><Favorite/>Remove From Favorites</Button>;
   
     return(
-      <Container maxWidth="lg">
 
      <Div>
       <Autocomplete 
@@ -151,7 +163,7 @@ const Div = styled.div`
         onChange = {getSearchedCity}
         sx={{width:'50%', margin:'auto'}}
         renderInput={(searchBy) =><div>
-         <p className='hhFWoK'>{errorValidation}</p> 
+         <p className='searchError'>{errorValidation}</p> 
          <TextField {...searchBy} onChange={getCitiesList} label="City" value={searchBy} 
           />
           </div>
@@ -168,22 +180,19 @@ const Div = styled.div`
        
        </div>
        <div className='weatherDiv'>
-       <Grid container spacing={2}>
           {fiveDays.map(item=>{
-               return <Grid item xs={3}><Item 
+               return <Item 
                key={Math.random()} 
                day={moment(item.Date).format('dddd')}
                date={moment.parseZone(item.Date).format('DD/MM/YYYY')} 
                img={item.Day.Icon} 
                degrees={`${item.Temperature.Maximum.Value}${tempMode ? '°C`' : '°F'}`} 
                weather={item.Day.IconPhrase}
-               /></Grid>
+               />
            })}
-           </Grid>
        </div>
         
     </Div>
-    </Container>
     )
 }
 

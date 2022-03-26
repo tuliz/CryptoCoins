@@ -18,7 +18,7 @@ margin:10px;
         justify-content: center;
         font-weight: bold;
     }
-    .cardDate{
+    .CardSubHeader{
         display: flex; 
         flex-direction: row;
         align-items: center;
@@ -33,7 +33,7 @@ const Item = (props)=>{
         <Div>
         <Card className='Card'>
             <p className='cardHeader'>{props.day || props.cityname}</p>
-            <p className='cardDate'>{props.date}</p>
+            <p className='CardSubHeader'>{props.date}</p>
             <CardMedia className='Image'
             image = {require(`../images/${props.img}.png`)} alt='rain'
             title = 'img'
@@ -41,8 +41,8 @@ const Item = (props)=>{
 
             />
 
-            <p className='degrees'>{props.degrees}</p>
-            <p className='weather'>{props.weather}</p>
+            <p className='CardSubHeader'>{props.degrees}</p>
+            <p className='CardSubHeader'>{props.weather}</p>
         </Card>
         </Div>
     );

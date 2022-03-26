@@ -9,12 +9,12 @@ import { useState } from 'react';
 const Light = styled.div`
 background-color:white;
     #header{
-        display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    background-color: #4E5D89;
-    color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      align-content: center;
+      background-color: #4E5D89;
+      color: white;
     }
     h2{
         padding-left:10px;

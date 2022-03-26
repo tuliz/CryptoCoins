@@ -12,15 +12,17 @@ padding: 1rem;
         justify-content: space-around;
         align-items: center;
     }
+
+    .link{
+        text-decoration:none;
+    }
 `;
 
 const Favorites = ()=>{
     const[localCurrentWeatherList, setLocalCurrentWeatherList] = useState([]);
     const favoritesList = useSelector(state=>state.favorites.favoritesList);
 
-
-    console.log(favoritesList);
-    console.log(localCurrentWeatherList);
+    
     useEffect(()=>{
          favoritesList.map((item, index)=>{
            
@@ -34,7 +36,7 @@ const Favorites = ()=>{
     const mapFavoritesToCard = ()=>{
         if (favoritesList.length === 0) return <div style={{ fontSize: '2vw' }}>No Favorites</div>;
         return localCurrentWeatherList.map((item, index)=>{
-            return <Link to={`/home/${favoritesList[index].key}`}><Item
+            return <Link className='link' to={`/home/${favoritesList[index].key}`}><Item
             key={Math.random()}
             cityname={favoritesList[index].name}
             img={item[0].WeatherIcon}
