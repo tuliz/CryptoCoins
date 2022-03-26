@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Container ,Autocomplete, TextField, Button} from "@mui/material";
+import {Container, Grid ,Autocomplete, TextField, Button} from "@mui/material";
 import {Favorite, FavoriteBorder} from '@mui/icons-material';
 import Item from './Item';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,7 +36,7 @@ const Div = styled.div`
   .upperHome{
       display:flex;
       align-items: center;
-  }
+      justify-content: space-between; }
 
   .WeatherDiv{
         display: flex;
@@ -68,8 +68,18 @@ const Div = styled.div`
   const tempMode = useSelector(state=>state.home.metric);
 
   useEffect(()=>{
-   fiveDaysRequest(city.key, tempMode).then(result=>dispatch(setFiveDaysWeather(result.data.DailyForecasts)));
-  }, [fiveDays]);
+    if(city.key != ''){
+      fiveDaysRequest(city.key, tempMode).then(result=>dispatch(setFiveDaysWeather(result.data.DailyForecasts)));
+       }
+     }, [fiveDays]);
+
+     useEffect(() => 
+      favoritesList.map(favorite=>{
+        if(favorite.key === city.key)
+          dispatch(setIsFavorite(true));
+        else
+          dispatch(setIsFavorite(false));
+     }), []);
 
 
   const getCitiesList = (e) =>{
@@ -80,6 +90,7 @@ const Div = styled.div`
 
   const getSearchedCity = (e, value) =>{
     fiveDaysRequest(value.Key, tempMode).then(result=>dispatch((setFiveDaysWeather(result.data.DailyForecasts))));
+    checkIsFavorite(value)? dispatch(setIsFavorite(true)) : dispatch(setIsFavorite(false));
     dispatch(setCity({key : value.Key, name: value.LocalizedName}));
   }
 
@@ -99,15 +110,15 @@ const Div = styled.div`
     (!isValide) ? setErrorValidation(error) : setErrorValidation('');
 }
 
-  /*const isFavorite = () =>{
-    favoritesList.forEach(favorite=>{
-      if(favorite.key === city.key){
-        return true;
-        }
-      return false;
+  const checkIsFavorite = () =>{
+    favoritesList.map(favorite=>{
+      if(favorite.key === city.key)
+        dispatch(setIsFavorite(true));
+
+      dispatch(setIsFavorite(false));
     })
   }
-  */
+  
 
   const handleFCMode = ()=>{
     dispatch(changeTempMode());
@@ -157,16 +168,18 @@ const Div = styled.div`
        
        </div>
        <div className='weatherDiv'>
+       <Grid container spacing={2}>
           {fiveDays.map(item=>{
-               return <Item 
+               return <Grid item xs={3}><Item 
                key={Math.random()} 
                day={moment(item.Date).format('dddd')}
                date={moment.parseZone(item.Date).format('DD/MM/YYYY')} 
                img={item.Day.Icon} 
                degrees={`${item.Temperature.Maximum.Value}${tempMode ? '°C`' : '°F'}`} 
                weather={item.Day.IconPhrase}
-               />
+               /></Grid>
            })}
+           </Grid>
        </div>
         
     </Div>
