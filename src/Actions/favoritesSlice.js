@@ -3,9 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const favoritesSlice = createSlice({
     name: 'favorites',
     initialState: {
-        favoritesList : [{key: 215854, name: 'Tel Aviv'}],
-        isFavorite: true,
-        
+        favoritesList : [],        
+        isFavorite: null,
     },
     reducers: {
         addFavorite: (state, action)=>{
@@ -16,7 +15,7 @@ export const favoritesSlice = createSlice({
         },
         setIsFavorite: (state, action)=>{
             state.isFavorite = action.payload;
-        },
+        }
     }
 })
 

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import Item from './Item';
 import { currentWeatherRequest } from '../Api'; 
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Div = styled.div`
 padding: 1rem;
@@ -33,13 +34,14 @@ const Favorites = ()=>{
     const mapFavoritesToCard = ()=>{
         if (favoritesList.length === 0) return <div style={{ fontSize: '2vw' }}>No Favorites</div>;
         return localCurrentWeatherList.map((item, index)=>{
-            return <Item
+            return <Link to={`/home/${favoritesList[index].key}`}><Item
             key={Math.random()}
             cityname={favoritesList[index].name}
             img={item[0].WeatherIcon}
             degrees={item[0].Temperature.Metric.Value}
             weather={item[0].WeatherText}
             />
+            </Link>
         })
        
     }

@@ -3,7 +3,7 @@ import {Home, Favorite, Brightness4} from '@mui/icons-material';
 import { Button } from '@mui/material';
 import {Link, Outlet} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {changeMode} from '../Actions/homeSlice';
+import { changeMode } from '../Actions/homeSlice';
 import { useState } from 'react';
 
 const Light = styled.div`
@@ -74,13 +74,13 @@ const Header = () =>{
     const mode = useSelector(state => state.home.mode);
     const[Choosendiv, setChoosendiv] = useState(Light);
 
-    const changeMode = ()=>{
+    const handleChangeMode = ()=>{
         if(mode === 'light'){
-            dispatch(changeMode({value:'dark'}));
+            dispatch(changeMode('dark'));
             setChoosendiv(Dark);
         }
         else{
-            dispatch(changeMode({value:'light'}));
+            dispatch(changeMode('light'));
             setChoosendiv(Light);
         }
     }
@@ -90,7 +90,7 @@ const Header = () =>{
         <div id='header'>
            <h2>What's My Weather</h2>
            <div className='IconsDiv'>
-              <div className='IconName'><Button onClick={changeMode}><Brightness4/></Button>Mode</div> 
+              <div className='IconName'><Button onClick={handleChangeMode}><Brightness4/></Button>Mode</div> 
               <div className='IconName'><Link to='/home'><Button><Home/></Button></Link>Home</div> 
               <div className='IconName'><Link to='/favorites'><Button><Favorite/></Button></ Link>Favorites</div> 
             </div>
