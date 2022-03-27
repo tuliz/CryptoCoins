@@ -1,6 +1,10 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+project created by yarden tulchinsky.
+
+Project Description-
+Weather project for getting five days weather forcast of searched city.
 
 ## Available Scripts
 
